@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About</title>
+    <link rel="stylesheet" href="../styling.css"/>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <h1><u>FIND A STUDY BUDDY</u></h1>
+    <div>
+        <a href="../index.html">Home</a>| <a href="about.html">About</a>
+    </div>
+    <h2><u>About</u></h2>
+
+
+
+
+
+
+    <h3><u>What is this website about?</u></h3>
+    <h4>The Study Buddy website helps find other students nearby who are willing to study with others.
+        It allows users to use their live location to search for nearby users in public areas and see what they are
+        studying.
+        If you'd like to join them, simply meet up in the location and study together! </h4>
+
+    <h3><u>Is this safe?</u></h3>
+    <h4>Yes, absolutely! We understand that sharing your live location online can be scary,
+        but our website screens all users upon registering (feature not available for this project) to make sure that
+        their
+        information matches with public records.</h4>
+    <h4>We also have an emergency SOS button should you feel uncomfortable at any point.</h4>
+
+    <h3><u>Is studying together really effective?</u></h3>
+    <h4>Yes! Many studies have shown that studying together boosts productivity, improves teamwork skills and helps you
+        learn from each other.
+        Group members may help you learn content through a different teaching style and you may have struggled with
+        certain topics when learning independently.
+        By teaching others, you also help reinforce your own learning. </h4>
+
+    <h4>Some researchers may argue that independent study is more effective as you won't get distracted and meeting
+        several people at the same time can be hard to schedule.
+        However, our website is made to combat these problems as you meet like-minded people who are ready to learn.
+    </h4>
+
+    <h4>We also conducted our own long-term study into students' test scores when they studied individually and when
+        they studied alone.
+        We asked 500 students which method they preferred to study and split them into their respective groups.</h4>
+
+    <canvas id="chart" width="800" height="400"></canvas>
+    <script src="sketch.js"></script>
+
+    <script>
+        chart();
+
+        async function chart() {
+            const data = await getData();
+            const ctx = document.getElementById('chart');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June'],
+                    datasets: [{
+                        label: 'Average Scores of Students Studying Alone',
+                        data: data.alones,
+                        fill: true,
+                        backgroundColor: 'rgba(255,0,0,0.5)',
+                        borderWidth: 1
+                    },
+                    
+                    {
+                        label: 'Average Scores of Students Studying Together',
+                        data: data.tgthr,
+                        fill: true,
+                        backgroundColor: 'rgba(255,0,0,0.5)',
+                        borderWidth: 1
+                    }
+                    ]
+                    
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grace: '40%',
+                            ticks: {
+                                callback: function (value, index, values) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
+        async function getData() {
+            const alones = [];
+            const tgthr = [];
+            const response = await fetch("Data/studying_data.csv")
+            const data = await response.text();
+            const table = data.split('\n').slice(1);
+            table.forEach(row => {
+                const columns = row.split(',');
+                const alone = columns[0];
+                alones.push(alone);
+                const together = columns[1];
+                tgthr.push(together);
+                console.log(alone, together);
+            })
+            return { alones, tgthr };
+        }
+    </script>
+
+    <p>Based on 500 students asked in Manchester aged 15-22</p>
+    <h4>We found that studying in groups was more effective than independently and we made a product to facilitate group
+        studying.</h4>
+</body>
+
+</html>

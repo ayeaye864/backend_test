@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+
+    <link rel="stylesheet" href="styling.css"/>
+
+    <!-- leaflet config -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <style>
+        #map {
+            height: 360px;
+        }
+
+        #map {
+            width: 800px;
+        }
+    </style>
+    <!-- leaflet config -->
+</head>
+
+<body>
+    <!-- html elements -->
+    <h1>FIND A STUDY BUDDY</h1>
+    <div>
+        <a href="index.html">Home</a>| <a href="about/about.html">About</a>
+    </div>
+    <h2><u>Home</u></h2>
+    
+    <h3> Need to find a study buddy? Look no further!</h3>
+    <p>Our website is designed to help you find  someone who shares your studying interests and schedule. 
+        Simply allow the site to access your live location and see nearby users who are currently studying.</p>
+
+    <p>Click on the icons near you to find out more about users studying nearby and join them!</p>
+
+<br>
+<br>
+    <h3>Your location:</h3>
+    <p>
+        latitude: <span id="lat"></span>º<br />
+        longitude: <span id="lon"></span>º
+    </p>
+
+    <div id="map"></div>
+
+    <script>
+        //leaflet map configuration
+    
+        const map = L.map('map').setView([0, 0], 4);
+        //build tiles
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 50,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+        //create marker
+        const satIcon = L.icon({
+            iconUrl: "user_pin.png",
+            iconSize: [50, 40],
+            iconAnchor: [25, 16],
+        });
+        
+        console.log("test");
+    </script>
+<br>
+<br>
+    <h3>Encountered an emergency whilst using our service? Use our <em>SOS BUTTON</em>!</h3>
+    <img src="sos.png" alt="SOS Button" width="150px" height="150px"/>
+    <p>This button is unavailable for this project</p>
+    <p>Upon pressing this button once, you will alert one of our staff nearby. We will arrive to your location and deal with it.</p>
+    <p>Upon pressing this button twice, your request will be sent to the nearest police station, who will attempt to diffuse the situation upon arrival.</p>
+
+
+
+    <script>
+        var lat, lon;
+
+        if ("geolocation" in navigator) {
+            console.log("location is available");
+            //call the getcurrentposition function on the navigator object
+            //this returns user's geolocation
+            navigator.geolocation.getCurrentPosition(async position => {
+                lat = position.coords.latitude.toFixed(2);
+                lon = position.coords.longitude.toFixed(2);
+                //write data to spans
+                document.getElementById('lat').textContent = lat;
+                document.getElementById('lon').textContent = lon;
+
+                const data = { lat, lon }; //package data as JSON object
+                const options = { //2nd object
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data) //string data
+                };
+                const marker = L.marker([lat,lon], { icon: satIcon }).addTo(map);
+                map.setView([lat,lon]);
+                const response = await fetch("/api", options);
+                const json = await response.json();
+                // console.log(request);
+            });
+        } else {
+            //no location data available error message
+            console.log("location is NOT available");
+        }
+    </script>
+</body>
+
+</html>
