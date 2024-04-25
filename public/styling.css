@@ -1,0 +1,24 @@
+*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+  }/*universal selector standards*/
+
+  body {
+    font-size: 18px;
+    background-color: rgb(255, 226, 210);
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    color: #4a4a4a;
+  } /*body's text is grey, set font*/
+
+  h1{
+    text-decoration: underline;
+    text-align: center;
+    padding-bottom:1.5em;
+  }
+
+  a{
+    text-align: center;
+    display: block;
+    width: 30%;
+  }

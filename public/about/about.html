@@ -5,8 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>About</title>
-    <link rel="stylesheet" href="../styling.css"/>
+    <title>About</title><!--tab title-->
+    <link rel="stylesheet" href="../styling.css" />
 
     <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -16,17 +16,12 @@
 </head>
 
 <body>
-    <h1><u>FIND A STUDY BUDDY</u></h1>
+    <h1><u>FIND A STUDY BUDDY</u></h1><!--main title-->
     <div>
-        <a href="../index.html">Home</a>| <a href="about.html">About</a>
+        <a href="../index.html">Home</a>| <a href="about.html">About</a><!--buttons for navigation to other pages-->
     </div>
     <h2><u>About</u></h2>
-
-
-
-
-
-
+    <!--Q&A section-->
     <h3><u>What is this website about?</u></h3>
     <h4>The Study Buddy website helps find other students nearby who are willing to study with others.
         It allows users to use their live location to search for nearby users in public areas and see what they are
@@ -61,31 +56,27 @@
 
     <script>
         chart();
-
+        // chart to compare studying data, line graph
         async function chart() {
             const data = await getData();
             const ctx = document.getElementById('chart');
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June'],
+                    labels: ['September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'],
                     datasets: [{
                         label: 'Average Scores of Students Studying Alone',
-                        data: data.alones,
-                        fill: true,
-                        backgroundColor: 'rgba(255,0,0,0.5)',
+                        data: data.alones, //data from .csv file
                         borderWidth: 1
                     },
-                    
+
                     {
                         label: 'Average Scores of Students Studying Together',
-                        data: data.tgthr,
-                        fill: true,
-                        backgroundColor: 'rgba(255,0,0,0.5)',
+                        data: data.tgthr,//data from .csv file
                         borderWidth: 1
                     }
                     ]
-                    
+
                 },
                 options: {
                     scales: {
@@ -107,10 +98,10 @@
         async function getData() {
             const alones = [];
             const tgthr = [];
-            const response = await fetch("Data/studying_data.csv")
+            const response = await fetch("Data/studying_data.csv")//external file
             const data = await response.text();
             const table = data.split('\n').slice(1);
-            table.forEach(row => {
+            table.forEach(row => {//separates the columns by commas and assigns them to variables
                 const columns = row.split(',');
                 const alone = columns[0];
                 alones.push(alone);
@@ -121,10 +112,9 @@
             return { alones, tgthr };
         }
     </script>
-
     <p>Based on 500 students asked in Manchester aged 15-22</p>
+
     <h4>We found that studying in groups was more effective than independently and we made a product to facilitate group
         studying.</h4>
 </body>
-
 </html>
