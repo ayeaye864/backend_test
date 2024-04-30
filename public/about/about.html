@@ -7,8 +7,7 @@
 
     <title>About</title><!--tab title-->
     <link rel="stylesheet" href="../styling.css" />
-
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css"><!--css-->
 
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
@@ -17,8 +16,9 @@
 
 <body>
     <h1><u>FIND A STUDY BUDDY</u></h1><!--main title-->
-    <div>
-        <a href="../index.html">Home</a>| <a href="about.html">About</a><!--buttons for navigation to other pages-->
+    <div class="button">
+        <a href="../index.html" class="press">Home</a>
+        <a href="about.html" class="press">About</a><!--buttons for navigation to other pages-->
     </div>
     <h2><u>About</u></h2>
     <!--Q&A section-->
@@ -51,10 +51,11 @@
         they studied alone.
         We asked 500 students which method they preferred to study and split them into their respective groups.</h4>
 
-    <canvas id="chart" width="800" height="400"></canvas>
+    <canvas id="chart" width="200" height="100"></canvas>
     <script src="sketch.js"></script>
 
     <script>
+        //chart using .csv file
         chart();
         // chart to compare studying data, line graph
         async function chart() {
@@ -67,13 +68,12 @@
                     datasets: [{
                         label: 'Average Scores of Students Studying Alone',
                         data: data.alones, //data from .csv file
-                        borderWidth: 1
+                        borderWidth: 1,
                     },
-
                     {
                         label: 'Average Scores of Students Studying Together',
                         data: data.tgthr,//data from .csv file
-                        borderWidth: 1
+                        borderWidth: 1,
                     }
                     ]
 
@@ -96,6 +96,7 @@
 
 
         async function getData() {
+            //async function to get data from csv file
             const alones = [];
             const tgthr = [];
             const response = await fetch("Data/studying_data.csv")//external file
@@ -112,9 +113,18 @@
             return { alones, tgthr };
         }
     </script>
-    <p>Based on 500 students asked in Manchester aged 15-22</p>
+    <p class="caption">Based on 500 students asked in Manchester aged 15-22</p>
 
     <h4>We found that studying in groups was more effective than independently and we made a product to facilitate group
         studying.</h4>
+
+    <footer>
+        <div class="content">
+            <h3><u>Contact Us</u></h3>
+            <p>Email: fakemail@studybuddy.com</p>
+            <p>Phone: 1234567890</p>
+            <p>© 2024 Find a Study Buddy App</p>
+        </div>
+    </footer>
 </body>
 </html>

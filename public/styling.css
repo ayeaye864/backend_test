@@ -6,7 +6,7 @@
 
   body {
     font-size: 18px;
-    background-color: rgb(255, 226, 210);
+    background-color:rgb(255, 244, 238);
     font-family:Georgia, 'Times New Roman', Times, serif;
     color: #4a4a4a;
   } /*body's text is grey, set font*/
@@ -14,11 +14,93 @@
   h1{
     text-decoration: underline;
     text-align: center;
-    padding-bottom:1.5em;
+    margin-bottom:1.5em;
+    color:rgb(63, 103, 104);
+    /*main title*/
   }
 
-  a{
-    text-align: center;
-    display: block;
-    width: 30%;
+  h2{
+    text-decoration: underline;
+    text-align:center;
+    margin:1.1em;
+    /*pages title*/
   }
+
+  h3{
+    text-decoration: underline;
+    text-align:left;
+    margin: 0.7em;
+    /*subtitle*/
+  }
+
+  h4{
+    text-align:left;
+    margin-left:0.7em;
+    font-weight: normal;
+    margin-bottom: 2em;
+    /*Q&A answers*/
+  }
+
+  .press{
+    background-color:cadetblue;
+    padding:15px 30px 15px 30px;
+    display:inline-block;
+    text-align:center;
+    color:#fff;
+    text-decoration:  none;
+    /*buttons to switch pages*/
+  }
+
+  .button{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items:center;
+    /*button div container*/
+  }
+
+  p, label{
+    padding-left:0.7em;
+    margin-bottom:5px;
+    margin-top:20px;
+    /*main text*/
+  }
+
+  button{
+    align-items: center;
+    margin-left: 10em;
+    font-size: 14px;
+    margin-bottom:3em;
+    /*submit button*/
+  }
+
+
+  footer{
+    background-color:cadetblue;
+    padding:10px;
+    margin-top: 50px;
+    position:relative;
+    width: auto;
+    font-size: 14px;
+    height:180px;
+/* footer settings*/
+}
+
+.content{
+color:#fff
+/*text in footer*/
+}
+
+.caption{
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 2em;
+  /*chart caption + sos button caption*/
+}
+
+img {
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 2em;
+  /*sos button image*/
+}

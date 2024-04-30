@@ -33,8 +33,9 @@
 <body>
     <!-- html elements -->
     <h1>FIND A STUDY BUDDY</h1><!--webpage main title-->
-    <div>
-        <a href="index.html">Home</a>| <a href="about/about.html">About</a><!--buttons to switch pages-->
+    <div class="button">
+        <a href="index.html" class="press">Home</a>
+        <a href="about/about.html" class="press">About</a><!--buttons to switch pages-->
     </div>
     <h2><u>Home</u></h2>
 
@@ -46,18 +47,26 @@
 
     <br>
     <br>
-    <h3>Your location:</h3>
+    <h3>Help others find you!</h3>
+    <!--input for user-->
+    <label for="user">Name:</label>
+    <input type="text" id="username" name="username" size="30" maxlength="100">
+    <br>
+    <label for="studying">Studying:</label>
+    <input type="text" id="usersubject" name="usersubject" size="30" maxlength="100">
     <p>
         latitude: <span id="lat"></span>º<br />
         longitude: <span id="lon"></span>º
     </p>
+    <button id="myBtn">Submit</button>
+    <!--calls for async function so add input to database-->
+
 
     <div id="map"></div>
-
     <script>
         //leaflet map configuration
 
-        const map = L.map('map').setView([0, 0], 9);
+        const map = L.map('map').setView([0, 0], 10);
         //build tiles
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 50,
@@ -74,18 +83,47 @@
     <br>
     <br>
     <h3>Encountered an emergency whilst using our service? Use our <em>SOS BUTTON</em>!</h3>
-    <img src="sos.png" alt="SOS Button" width="150px" height="150px" />
-    <p>This button is unavailable for this project</p>
+    <img src="sos.png" alt="SOS Button" width="150px" height="150px" /><!--img-->
+    <p class="caption">This button is unavailable for this project</p>
     <p>Upon pressing this button once, you will alert one of our staff nearby. We will arrive to your location and deal
         with it.</p>
     <p>Upon pressing this button twice, your request will be sent to the nearest police station, who will attempt to
         diffuse the situation upon arrival.</p>
 
-
+        <footer>
+            <div class="content">
+                <h3><u>Contact Us</u></h3>
+                <p>Email: fakemail@studybuddy.com</p>
+                <p>Phone: 1234567890</p>
+                <p>© 2024 Find a Study Buddy App</p>
+            </div>
+        </footer>
+    </body>
 
     <script>
-        var lat, lon;
+        //when user presses submit button, post request to database
+        document.getElementById("myBtn").addEventListener("click", async position => {
+            const input1 = document.getElementById('username');
+            const input2 = document.getElementById('usersubject');
+            const name = input1.value;
+            const subject = input2.value;
+            const data = { name, subject, lat, lon };
+            console.log(data);
+            const options = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            };
 
+            const response = await fetch("/api", options);
+            const json = await response.json();
+            // console.log(request);
+        });
+
+        var lat, lon;
+        //gets user data
         if ("geolocation" in navigator) {
             console.log("location is available");
             //call the getcurrentposition function on the navigator object
@@ -96,58 +134,34 @@
                 //write data to spans
                 document.getElementById('lat').textContent = lat;
                 document.getElementById('lon').textContent = lon;
-
-                const data = { lat, lon }; //package data as JSON object
-                const options = { //2nd object
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data) //string data
-                };
-                const marker = L.marker([lat, lon], { icon: satIcon }).addTo(map);//create marker here
+                const marker = L.marker([lat, lon], { icon: satIcon }).addTo(map);//create marker here based on location
                 marker.bindPopup("You <br>" + lat + ", " + lon).openPopup(); //
                 map.setView([lat, lon]);//set map view to be around user location
-                const response = await fetch("/api", options);
-                const json = await response.json();
-                //console.log(request);
             });
         } else {
             //no location data available error message
             console.log("location is NOT available");
-        }    
+        }
+
     </script>
 
     <script>
         getData(); //retrieve data from database
-
         async function getData() {
             const response = await fetch('/api');
             const data = await response.json();
-            console.log(data);
+            //console.log(data); //testing purpose
 
-            for (item of data) {
-               
-               
-
-
+            for (item of data) { //create a pin  for each item in database
                 const botIcon = L.icon({
                     iconUrl: "other_pin.png",
                     iconSize: [50, 40],
                     iconAnchor: [25, 16],
                 });
 
-                var marker = L.marker([item.lat,item.lon], { icon: botIcon }).addTo(map);
-                console.log(item.lat);
-                marker.bindPopup(item.name).openPopup();
-
-
+                var marker = L.marker([item.longitude, item.latitude], { icon: botIcon }).addTo(map); //marker 
+                marker.bindPopup(item.name + "<br> Studying:" + item.subject).openPopup();//popup to display name+ subject of person at pin
             }
-           
         }
     </script>
-
-
-</body>
-
 </html>
